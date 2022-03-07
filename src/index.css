@@ -1,13 +1,102 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.title {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  font-size: 4em;
+  font-weight: 400;
+  text-align: center;
+  width: 100%;
+  letter-spacing: 1em;
+  -webkit-animation: puff-in-center 0.4s cubic-bezier(0.47, 0, 0.745, 0.715) both;
+  animation: puff-in-center 0.4s cubic-bezier(0.47, 0, 0.745, 0.715) both;
+}
+
+.allTop {
+  background-color: blanchedalmond;
+  border-top-left-radius: 55px;
+  border-top-right-radius: 55px;
+}
+
+.positionBox {
+  padding: 10px;
+  margin: 10px;
+  align-content: flex-start;
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: #eee;
+  width: 250px;
+  text-align: left;
+}
+.bothTeamsContainer {
+  display: flex;
+  justify-content: center;
+}
+.teamContainer {
+  padding: 25px;
+  margin: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+.player {
+  display: block;
+  text-align: left;
+}
+
+.playerMatch {
+  font-weight: 800;
+}
+
+.playerNoMatch {
+  opacity: 0.1;
+}
+
+.MuiInputBase-root {
+  background-color: white !important;
+}
+
+@-webkit-keyframes puff-in-center {
+  0% {
+    -webkit-transform: scale(2);
+    transform: scale(2);
+    -webkit-filter: blur(4px);
+    filter: blur(4px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-filter: blur(0px);
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+@keyframes puff-in-center {
+  0% {
+    -webkit-transform: scale(2);
+    transform: scale(2);
+    -webkit-filter: blur(4px);
+    filter: blur(4px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-filter: blur(0px);
+    filter: blur(0px);
+    opacity: 1;
+  }
 }
