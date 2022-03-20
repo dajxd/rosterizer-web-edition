@@ -98,8 +98,15 @@ function App() {
     return newStr;
   };
 
-  const parsedResponse = (resp) => {
+  const parsedResponse = (resp, nonWikiText) => {
     const sectionParser = (s) => {
+      const linkFinder = (name) => {
+        // console.log(nonWikiText.data.parse.links);
+        // console.log(name);
+        // console.log(nonWikiText.data.parse.links.find((e) => e['*'].includes(name)));
+        const linkString = nonWikiText.data.parse.links.find((e) => e['*'].includes(name));
+        return linkString ? `https://en.wikipedia.org/wiki/${linkString['*'].replaceAll(' ', '_')}` : null;
+      };
       const parsedSection = {};
       let split = s.split('\n');
       let title = split[0].replace('=', '');
@@ -115,6 +122,7 @@ function App() {
           parsedSection.members.push({
             number: sp[1],
             name: sp[2].includes('}') ? sp[2].substr(0, sp[2].indexOf('}')) : sp[2],
+            link: linkFinder(sp[2].includes('}') ? sp[2].substr(0, sp[2].indexOf('}')) : sp[2]),
             position: sp[3] ? sp[3].substr(0, sp[3].indexOf('}')) : null,
           });
         }
@@ -122,20 +130,21 @@ function App() {
       return [title, parsedSection.members];
     };
     const team = {};
-    // const parsed = JSON.parse(resp);
-    // const parsed = resp.parsed
     const rawString = resp.parse.wikitext['*'].replaceAll('&nbsp;', '');
 
     let teamName = rawString.split(/\n\|/)[1];
+    const urlTeamName = rawString
+      .split(/\n\|/)[1]
+      .substr(teamName.indexOf('=') + 1)
+      .replaceAll(' ', '_');
     teamName = teamName.substr(teamName.indexOf('=') + 1).replaceAll(' ', '');
     const splitIntoSections = rawString
       .split(/\n\|/)
       .slice(rawString.split(/\n\|/).indexOf(rawString.split(/\n\|/).find((e) => e.includes('Quarterbacks'))), rawString.split(/\n\|/).length - 1);
     splitIntoSections.forEach((s) => {
-      const [t, i] = sectionParser(s);
+      const [t, i] = sectionParser(s, urlTeamName);
       team[t] = i;
     });
-    if (rawString.includes('Panthers')) console.log(splitIntoSections);
     return team;
   };
 
@@ -146,26 +155,27 @@ function App() {
           axios
             .get(`https://en.wikipedia.org/w/api.php?action=parse&page=Template:${teamName}_roster&prop=wikitext&format=json&origin=*`)
             .then((response) => {
-              setLeague((prev) => {
-                const parsedDataObject = parsedResponse(response.data);
-
-                return {
-                  ...prev,
-                  [conference[0]]: {
-                    ...prev[conference[0]],
-                    [division[0]]: {
-                      ...prev[conference[0]][division[0]],
-                      [teamName]: {
-                        ...parsedDataObject,
-                        teamName: teamName.replaceAll('_', ' '),
-                        colors: {
-                          primary: (() => altColorCodes.find((e) => e.name === teamName.replaceAll('_', ' '))?.colors?.hex[0])(),
-                          secondary: (() => altColorCodes.find((e) => e.name === teamName.replaceAll('_', ' '))?.colors?.hex[1])(),
+              axios.get(`https://en.wikipedia.org/w/api.php?action=parse&page=Template:${teamName}_roster&format=json&origin=*`).then((resp2) => {
+                setLeague((prev) => {
+                  const parsedDataObject = parsedResponse(response.data, resp2);
+                  return {
+                    ...prev,
+                    [conference[0]]: {
+                      ...prev[conference[0]],
+                      [division[0]]: {
+                        ...prev[conference[0]][division[0]],
+                        [teamName]: {
+                          ...parsedDataObject,
+                          teamName: teamName.replaceAll('_', ' '),
+                          colors: {
+                            primary: (() => altColorCodes.find((e) => e.name === teamName.replaceAll('_', ' '))?.colors?.hex[0])(),
+                            secondary: (() => altColorCodes.find((e) => e.name === teamName.replaceAll('_', ' '))?.colors?.hex[1])(),
+                          },
                         },
                       },
                     },
-                  },
-                };
+                  };
+                });
               });
               if (
                 Object.entries(league.nfc.south).length +
@@ -231,17 +241,23 @@ function App() {
                   (player.name.toLowerCase().includes(filterName.toLowerCase()) && filterName.length > 0) ||
                   (player.number.includes(filterNumber) && filterNumber.length > 0) ? (
                     <span className="player playerMatch" key={player.name}>
-                      <b>{player.number}</b> {player.name}
+                      <a href={player.link || ''} target="_blank" rel="noreferrer">
+                        <b>{player.number}</b> {player.name}
+                      </a>
                     </span>
                   ) : (
                     <span className="player playerNoMatch" key={player.name}>
-                      <b>{player.number}</b> {player.name}
+                      <a href={player.link || ''} target="_blank" rel="noreferrer">
+                        <b>{player.number}</b> {player.name}
+                      </a>
                     </span>
                   )
                 )
               : allPositions[k].map((player) => (
                   <span className="player" key={player.name}>
-                    <b>{player.number}</b> {player.name}
+                    <a href={player.link || ''} target="_blank" rel="noreferrer">
+                      <b>{player.number}</b> {player.name}
+                    </a>
                   </span>
                 ))}
           </div>
@@ -254,11 +270,22 @@ function App() {
     <div className="App">
       <Grid container>
         <Grid container item className="allTop">
-          <Grid xs={12} className="title">
-            <span>rosterizer</span>
+          <Grid container item xs={12} className="title">
+            <p />
+            <p>r</p>
+            <p>o</p>
+            <p>s</p>
+            <p>t</p>
+            <p>e</p>
+            <p>r</p>
+            <p>i</p>
+            <p>z</p>
+            <p>e</p>
+            <p>r</p>
+            <p />
           </Grid>
-          <Grid container item m={4}>
-            <Grid item xs={3} textAlign="center">
+          <Grid container item m={4} justifyContent="space-between">
+            <Grid item textAlign="center">
               <InputLabel>Team One</InputLabel>
               <FormControl style={{ width: '200px' }}>
                 <Select
@@ -338,7 +365,7 @@ function App() {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={2} textAlign="center">
+            <Grid item textAlign="center">
               <InputLabel>Filter By Number</InputLabel>
               <TextField
                 value={filterNumber}
@@ -348,7 +375,7 @@ function App() {
                 }}
               ></TextField>
             </Grid>
-            <Grid item xs={2} textAlign="center">
+            <Grid item textAlign="center">
               <InputLabel>Today's Games</InputLabel>
               <FormControl style={{ width: '200px' }}>
                 <Select
@@ -375,7 +402,7 @@ function App() {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={2} textAlign="center">
+            <Grid item textAlign="center">
               <InputLabel>Filter By Name</InputLabel>
               <TextField
                 value={filterName}
@@ -385,7 +412,7 @@ function App() {
               ></TextField>
             </Grid>
 
-            <Grid item xs={3} textAlign="center">
+            <Grid item textAlign="center">
               <InputLabel>Team Two</InputLabel>
               <FormControl style={{ width: '200px' }}>
                 <Select
