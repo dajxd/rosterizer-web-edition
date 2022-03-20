@@ -86,9 +86,6 @@ function App() {
   const parsedResponse = (resp, nonWikiText) => {
     const sectionParser = (s) => {
       const linkFinder = (name) => {
-        // console.log(nonWikiText.data.parse.links);
-        // console.log(name);
-        // console.log(nonWikiText.data.parse.links.find((e) => e['*'].includes(name)));
         const linkString = nonWikiText.data.parse.links.find((e) => e['*'].includes(name));
         return linkString ? `https://en.wikipedia.org/wiki/${linkString['*'].replaceAll(' ', '_')}` : null;
       };
@@ -355,7 +352,6 @@ function App() {
                 <InputLabel>Filter By Number</InputLabel>
                 <TextField
                   value={filterNumber}
-                  // inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                   onChange={(e) => {
                     setFilterNumber(e.target.value.replaceAll(/[A-Z]|[a-z]/g, ''));
                   }}
@@ -489,8 +485,6 @@ function App() {
             style={{
               backgroundColor: `#${selectedTeamOne?.colors?.secondary || 'ffffff'}`,
               color: `#${selectedTeamOne?.colors?.primary || 'ffffff'}`,
-              // WebkitBoxShadow: `0px 0px 37px 50px #${selectedTeamOne?.colors?.secondary || 'ffffff'}`,
-              // boxShadow: `0px 0px 37px 50px #${selectedTeamOne?.colors?.secondary || 'ffffff'}`,
             }}
           >
             {selectedTeamOne && <FormattedTeam {...selectedTeamOne} />}
@@ -503,8 +497,6 @@ function App() {
             style={{
               backgroundColor: `#${selectedTeamTwo?.colors?.secondary || 'ffffff'}`,
               color: `#${selectedTeamTwo?.colors?.primary || 'ffffff'}`,
-              // WebkitBoxShadow: `0px 0px 37px 50px #${selectedTeamTwo?.colors?.secondary || 'ffffff'}`,
-              // boxShadow: `0px 0px 37px 50px #${selectedTeamTwo?.colors?.secondary || 'ffffff'}`,
             }}
           >
             {selectedTeamTwo && <FormattedTeam {...selectedTeamTwo} />}
