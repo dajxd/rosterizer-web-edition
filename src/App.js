@@ -1,24 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { colorCodes, altColorCodes } from './colorCodes';
+import { colorCodes } from './colorCodes';
 import './App.css';
-import {
-  Select,
-  FormControl,
-  Grid,
-  DataGrid,
-  Box,
-  Paper,
-  TableBody,
-  TableCell,
-  ListSubheader,
-  TableContainer,
-  TableHead,
-  TableRow,
-  InputLabel,
-  MenuItem,
-  TextField,
-} from '@mui/material';
+import { Select, FormControl, Grid, ListSubheader, InputLabel, MenuItem, TextField } from '@mui/material';
 
 function App() {
   const [dataReady, setDataReady] = useState(false);
@@ -42,6 +26,7 @@ function App() {
       west: { Buffalo_Bills: {}, Miami_Dolphins: {}, New_England_Patriots: {}, New_York_Jets: {} },
     },
   });
+
   const teamNames = {
     nfc: {
       south: ['Atlanta_Falcons', 'Carolina_Panthers', 'New_Orleans_Saints', 'Tampa_Bay_Buccaneers'],
@@ -168,8 +153,8 @@ function App() {
                           ...parsedDataObject,
                           teamName: teamName.replaceAll('_', ' '),
                           colors: {
-                            primary: (() => altColorCodes.find((e) => e.name === teamName.replaceAll('_', ' '))?.colors?.hex[0])(),
-                            secondary: (() => altColorCodes.find((e) => e.name === teamName.replaceAll('_', ' '))?.colors?.hex[1])(),
+                            primary: (() => colorCodes.find((e) => e.name === teamName.replaceAll('_', ' '))?.colors?.hex[0])(),
+                            secondary: (() => colorCodes.find((e) => e.name === teamName.replaceAll('_', ' '))?.colors?.hex[1])(),
                           },
                         },
                       },
@@ -185,8 +170,8 @@ function App() {
                   Object.entries(league.afc.south).length +
                   Object.entries(league.afc.east).length +
                   Object.entries(league.afc.west).length +
-                  Object.entries(league.afc.north).length ===
-                64
+                  Object.entries(league.afc.north).length >=
+                32
               ) {
                 setDataReady(true);
               } else {
@@ -268,261 +253,266 @@ function App() {
 
   return (
     <div className="App">
-      <Grid container>
-        <Grid container item className="allTop">
-          <Grid container item xs={12} className="title">
-            <p />
-            <p>r</p>
-            <p>o</p>
-            <p>s</p>
-            <p>t</p>
-            <p>e</p>
-            <p>r</p>
-            <p>i</p>
-            <p>z</p>
-            <p>e</p>
-            <p>r</p>
-            <p />
-          </Grid>
-          <Grid container item m={4} justifyContent="space-between">
-            <Grid item textAlign="center">
-              <InputLabel>Team One</InputLabel>
-              <FormControl style={{ width: '200px' }}>
-                <Select
-                  id="teamSelectOne"
-                  value="Change team"
-                  onChange={(e) => {
-                    setSelectedTeamOne(e.target.value);
-                  }}
-                >
-                  <MenuItem key="Change team" value="Change team">
-                    Change team
-                  </MenuItem>
-                  <ListSubheader>NFC North</ListSubheader>
-                  {teamNames.nfc.north.map((teamName) => {
-                    return (
-                      <MenuItem key={teamName} value={{ ...league.nfc.north[teamName] }}>
-                        {teamName.replaceAll('_', ' ')}
-                      </MenuItem>
-                    );
-                  })}
-                  <ListSubheader>NFC East</ListSubheader>
-                  {teamNames.nfc.east.map((teamName) => {
-                    return (
-                      <MenuItem key={teamName} value={{ ...league.nfc.east[teamName] }}>
-                        {teamName.replaceAll('_', ' ')}
-                      </MenuItem>
-                    );
-                  })}
-                  <ListSubheader>NFC West</ListSubheader>
-                  {teamNames.nfc.west.map((teamName) => {
-                    return (
-                      <MenuItem key={teamName} value={{ ...league.nfc.west[teamName] }}>
-                        {teamName.replaceAll('_', ' ')}
-                      </MenuItem>
-                    );
-                  })}
-                  <ListSubheader>NFC South</ListSubheader>
-                  {teamNames.nfc.south.map((teamName) => {
-                    return (
-                      <MenuItem key={teamName} value={{ ...league.nfc.south[teamName] }}>
-                        {teamName.replaceAll('_', ' ')}
-                      </MenuItem>
-                    );
-                  })}
-                  <ListSubheader>AFC North</ListSubheader>
-                  {teamNames.afc.north.map((teamName) => {
-                    return (
-                      <MenuItem key={teamName} value={{ ...league.afc.north[teamName] }}>
-                        {teamName.replaceAll('_', ' ')}
-                      </MenuItem>
-                    );
-                  })}
-                  <ListSubheader>AFC East</ListSubheader>
-                  {teamNames.afc.east.map((teamName) => {
-                    return (
-                      <MenuItem key={teamName} value={{ ...league.afc.east[teamName] }}>
-                        {teamName.replaceAll('_', ' ')}
-                      </MenuItem>
-                    );
-                  })}
-                  <ListSubheader>AFC West</ListSubheader>
-                  {teamNames.afc.west.map((teamName) => {
-                    return (
-                      <MenuItem key={teamName} value={{ ...league.afc.west[teamName] }}>
-                        {teamName.replaceAll('_', ' ')}
-                      </MenuItem>
-                    );
-                  })}
-                  <ListSubheader>AFC South</ListSubheader>
-                  {teamNames.afc.south.map((teamName) => {
-                    return (
-                      <MenuItem key={teamName} value={{ ...league.afc.south[teamName] }}>
-                        {teamName.replaceAll('_', ' ')}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
+      {dataReady ? (
+        <Grid container>
+          <Grid container item className="allTop">
+            <Grid container item xs={12} className="title">
+              <p />
+              <p>r</p>
+              <p>o</p>
+              <p>s</p>
+              <p>t</p>
+              <p>e</p>
+              <p>r</p>
+              <p>i</p>
+              <p>z</p>
+              <p>e</p>
+              <p>r</p>
+              <p />
             </Grid>
-            <Grid item textAlign="center">
-              <InputLabel>Filter By Number</InputLabel>
-              <TextField
-                value={filterNumber}
-                type="number"
-                onChange={(e) => {
-                  setFilterNumber(e.target.value);
-                }}
-              ></TextField>
-            </Grid>
-            <Grid item textAlign="center">
-              <InputLabel>Today's Games</InputLabel>
-              <FormControl style={{ width: '200px' }}>
-                <Select
-                  id="gameSelect"
-                  value="None"
+            <Grid container item m={4} justifyContent="space-between">
+              <Grid item textAlign="center">
+                <InputLabel>Team One</InputLabel>
+                <FormControl style={{ width: '200px' }}>
+                  <Select
+                    id="teamSelectOne"
+                    value="Change team"
+                    onChange={(e) => {
+                      setSelectedTeamOne(e.target.value);
+                    }}
+                  >
+                    <MenuItem key="Change team" value="Change team">
+                      Change team
+                    </MenuItem>
+                    <ListSubheader>NFC North</ListSubheader>
+                    {teamNames.nfc.north.map((teamName) => {
+                      return (
+                        <MenuItem key={teamName} value={{ ...league.nfc.north[teamName] }}>
+                          {teamName.replaceAll('_', ' ')}
+                        </MenuItem>
+                      );
+                    })}
+                    <ListSubheader>NFC East</ListSubheader>
+                    {teamNames.nfc.east.map((teamName) => {
+                      return (
+                        <MenuItem key={teamName} value={{ ...league.nfc.east[teamName] }}>
+                          {teamName.replaceAll('_', ' ')}
+                        </MenuItem>
+                      );
+                    })}
+                    <ListSubheader>NFC West</ListSubheader>
+                    {teamNames.nfc.west.map((teamName) => {
+                      return (
+                        <MenuItem key={teamName} value={{ ...league.nfc.west[teamName] }}>
+                          {teamName.replaceAll('_', ' ')}
+                        </MenuItem>
+                      );
+                    })}
+                    <ListSubheader>NFC South</ListSubheader>
+                    {teamNames.nfc.south.map((teamName) => {
+                      return (
+                        <MenuItem key={teamName} value={{ ...league.nfc.south[teamName] }}>
+                          {teamName.replaceAll('_', ' ')}
+                        </MenuItem>
+                      );
+                    })}
+                    <ListSubheader>AFC North</ListSubheader>
+                    {teamNames.afc.north.map((teamName) => {
+                      return (
+                        <MenuItem key={teamName} value={{ ...league.afc.north[teamName] }}>
+                          {teamName.replaceAll('_', ' ')}
+                        </MenuItem>
+                      );
+                    })}
+                    <ListSubheader>AFC East</ListSubheader>
+                    {teamNames.afc.east.map((teamName) => {
+                      return (
+                        <MenuItem key={teamName} value={{ ...league.afc.east[teamName] }}>
+                          {teamName.replaceAll('_', ' ')}
+                        </MenuItem>
+                      );
+                    })}
+                    <ListSubheader>AFC West</ListSubheader>
+                    {teamNames.afc.west.map((teamName) => {
+                      return (
+                        <MenuItem key={teamName} value={{ ...league.afc.west[teamName] }}>
+                          {teamName.replaceAll('_', ' ')}
+                        </MenuItem>
+                      );
+                    })}
+                    <ListSubheader>AFC South</ListSubheader>
+                    {teamNames.afc.south.map((teamName) => {
+                      return (
+                        <MenuItem key={teamName} value={{ ...league.afc.south[teamName] }}>
+                          {teamName.replaceAll('_', ' ')}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item textAlign="center">
+                <InputLabel>Filter By Number</InputLabel>
+                <TextField
+                  value={filterNumber}
+                  // inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                   onChange={(e) => {
-                    setSelectedGame(e.target.value);
+                    setFilterNumber(e.target.value.replaceAll(/[A-Z]|[a-z]/g, ''));
                   }}
-                >
-                  <MenuItem value="None">Choose matchup</MenuItem>
-                  <ListSubheader>Live</ListSubheader>
+                ></TextField>
+              </Grid>
+              <Grid item textAlign="center">
+                <InputLabel>Today's Games</InputLabel>
+                <FormControl style={{ width: '200px' }}>
+                  <Select
+                    id="gameSelect"
+                    value="None"
+                    onChange={(e) => {
+                      setSelectedGame(e.target.value);
+                    }}
+                  >
+                    <MenuItem value="None">Choose matchup</MenuItem>
+                    <ListSubheader>Live</ListSubheader>
 
-                  <MenuItem value={[league.nfc.east.Dallas_Cowboys, league.nfc.east.New_York_Giants]}>DAL v NYG</MenuItem>
-                  <MenuItem value={[league.nfc.north.Green_Bay_Packers, league.nfc.north.Detroit_Lions]}>GB @ DET</MenuItem>
-                  <MenuItem value={[league.nfc.west.Los_Angeles_Rams, league.afc.west.Las_Vegas_Raiders]}>LAR @ LV</MenuItem>
-                  <ListSubheader>Upcoming</ListSubheader>
-                  <MenuItem value={[league.nfc.west.San_Francisco_49ers, league.nfc.west.Seattle_Seahawks]}>SF @ SEA</MenuItem>
-                  <MenuItem value={[league.nfc.west.Arizona_Cardinals, league.afc.west.Los_Angeles_Chargers]}>ARI @ LAC</MenuItem>
-                  <MenuItem value={[league.afc.east.Buffalo_Bills, league.afc.east.Miami_Dolphins]}>BUF @ MIA</MenuItem>
-                  <MenuItem value={[league.nfc.east.Washington_Commanders, league.nfc.east.Philadelphia_Eagles]}>WAS @ PHI</MenuItem>
-                  <ListSubheader>Ended</ListSubheader>
-                  <MenuItem value={[league.afc.west.Denver_Broncos, league.afc.west.Kansas_City_Chiefs]}>DEN @ KC</MenuItem>
-                  <MenuItem value={[league.afc.north.Baltimore_Ravens, league.afc.north.Cleveland_Browns]}>BAL @ CLE</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item textAlign="center">
-              <InputLabel>Filter By Name</InputLabel>
-              <TextField
-                value={filterName}
-                onChange={(e) => {
-                  setFilterName(e.target.value);
-                }}
-              ></TextField>
-            </Grid>
+                    <MenuItem value={[league.nfc.east.Dallas_Cowboys, league.nfc.east.New_York_Giants]}>DAL v NYG</MenuItem>
+                    <MenuItem value={[league.nfc.north.Green_Bay_Packers, league.nfc.north.Detroit_Lions]}>GB @ DET</MenuItem>
+                    <MenuItem value={[league.nfc.west.Los_Angeles_Rams, league.afc.west.Las_Vegas_Raiders]}>LAR @ LV</MenuItem>
+                    <ListSubheader>Upcoming</ListSubheader>
+                    <MenuItem value={[league.nfc.west.San_Francisco_49ers, league.nfc.west.Seattle_Seahawks]}>SF @ SEA</MenuItem>
+                    <MenuItem value={[league.nfc.west.Arizona_Cardinals, league.afc.west.Los_Angeles_Chargers]}>ARI @ LAC</MenuItem>
+                    <MenuItem value={[league.afc.east.Buffalo_Bills, league.afc.east.Miami_Dolphins]}>BUF @ MIA</MenuItem>
+                    <MenuItem value={[league.nfc.east.Washington_Commanders, league.nfc.east.Philadelphia_Eagles]}>WAS @ PHI</MenuItem>
+                    <ListSubheader>Ended</ListSubheader>
+                    <MenuItem value={[league.afc.west.Denver_Broncos, league.afc.west.Kansas_City_Chiefs]}>DEN @ KC</MenuItem>
+                    <MenuItem value={[league.afc.north.Baltimore_Ravens, league.afc.north.Cleveland_Browns]}>BAL @ CLE</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item textAlign="center">
+                <InputLabel>Filter By Name</InputLabel>
 
-            <Grid item textAlign="center">
-              <InputLabel>Team Two</InputLabel>
-              <FormControl style={{ width: '200px' }}>
-                <Select
-                  id="teamSelectTwo"
-                  value="Change team"
+                <TextField
+                  value={filterName}
                   onChange={(e) => {
-                    setSelectedTeamTwo(e.target.value);
+                    setFilterName(e.target.value);
                   }}
-                >
-                  <MenuItem key="Change team" value="Change team">
-                    Change team
-                  </MenuItem>
-                  <ListSubheader>NFC North</ListSubheader>
-                  {teamNames.nfc.north.map((teamName) => {
-                    return (
-                      <MenuItem key={teamName} value={{ ...league.nfc.north[teamName] }}>
-                        {teamName.replaceAll('_', ' ')}
-                      </MenuItem>
-                    );
-                  })}
-                  <ListSubheader>NFC East</ListSubheader>
-                  {teamNames.nfc.east.map((teamName) => {
-                    return (
-                      <MenuItem key={teamName} value={{ ...league.nfc.east[teamName] }}>
-                        {teamName.replaceAll('_', ' ')}
-                      </MenuItem>
-                    );
-                  })}
-                  <ListSubheader>NFC West</ListSubheader>
-                  {teamNames.nfc.west.map((teamName) => {
-                    return (
-                      <MenuItem key={teamName} value={{ ...league.nfc.west[teamName] }}>
-                        {teamName.replaceAll('_', ' ')}
-                      </MenuItem>
-                    );
-                  })}
-                  <ListSubheader>NFC South</ListSubheader>
-                  {teamNames.nfc.south.map((teamName) => {
-                    return (
-                      <MenuItem key={teamName} value={{ ...league.nfc.south[teamName] }}>
-                        {teamName.replaceAll('_', ' ')}
-                      </MenuItem>
-                    );
-                  })}
-                  <ListSubheader>AFC North</ListSubheader>
-                  {teamNames.afc.north.map((teamName) => {
-                    return (
-                      <MenuItem key={teamName} value={{ ...league.afc.north[teamName] }}>
-                        {teamName.replaceAll('_', ' ')}
-                      </MenuItem>
-                    );
-                  })}
-                  <ListSubheader>AFC East</ListSubheader>
-                  {teamNames.afc.east.map((teamName) => {
-                    return (
-                      <MenuItem key={teamName} value={{ ...league.afc.east[teamName] }}>
-                        {teamName.replaceAll('_', ' ')}
-                      </MenuItem>
-                    );
-                  })}
-                  <ListSubheader>AFC West</ListSubheader>
-                  {teamNames.afc.west.map((teamName) => {
-                    return (
-                      <MenuItem key={teamName} value={{ ...league.afc.west[teamName] }}>
-                        {teamName.replaceAll('_', ' ')}
-                      </MenuItem>
-                    );
-                  })}
-                  <ListSubheader>AFC South</ListSubheader>
-                  {teamNames.afc.south.map((teamName) => {
-                    return (
-                      <MenuItem key={teamName} value={{ ...league.afc.south[teamName] }}>
-                        {teamName.replaceAll('_', ' ')}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
+                ></TextField>
+              </Grid>
+
+              <Grid item textAlign="center">
+                <InputLabel>Team Two</InputLabel>
+                <FormControl style={{ width: '200px' }}>
+                  <Select
+                    id="teamSelectTwo"
+                    value="Change team"
+                    onChange={(e) => {
+                      setSelectedTeamTwo(e.target.value);
+                    }}
+                  >
+                    <MenuItem key="Change team" value="Change team">
+                      Change team
+                    </MenuItem>
+                    <ListSubheader>NFC North</ListSubheader>
+                    {teamNames.nfc.north.map((teamName) => {
+                      return (
+                        <MenuItem key={teamName} value={{ ...league.nfc.north[teamName] }}>
+                          {teamName.replaceAll('_', ' ')}
+                        </MenuItem>
+                      );
+                    })}
+                    <ListSubheader>NFC East</ListSubheader>
+                    {teamNames.nfc.east.map((teamName) => {
+                      return (
+                        <MenuItem key={teamName} value={{ ...league.nfc.east[teamName] }}>
+                          {teamName.replaceAll('_', ' ')}
+                        </MenuItem>
+                      );
+                    })}
+                    <ListSubheader>NFC West</ListSubheader>
+                    {teamNames.nfc.west.map((teamName) => {
+                      return (
+                        <MenuItem key={teamName} value={{ ...league.nfc.west[teamName] }}>
+                          {teamName.replaceAll('_', ' ')}
+                        </MenuItem>
+                      );
+                    })}
+                    <ListSubheader>NFC South</ListSubheader>
+                    {teamNames.nfc.south.map((teamName) => {
+                      return (
+                        <MenuItem key={teamName} value={{ ...league.nfc.south[teamName] }}>
+                          {teamName.replaceAll('_', ' ')}
+                        </MenuItem>
+                      );
+                    })}
+                    <ListSubheader>AFC North</ListSubheader>
+                    {teamNames.afc.north.map((teamName) => {
+                      return (
+                        <MenuItem key={teamName} value={{ ...league.afc.north[teamName] }}>
+                          {teamName.replaceAll('_', ' ')}
+                        </MenuItem>
+                      );
+                    })}
+                    <ListSubheader>AFC East</ListSubheader>
+                    {teamNames.afc.east.map((teamName) => {
+                      return (
+                        <MenuItem key={teamName} value={{ ...league.afc.east[teamName] }}>
+                          {teamName.replaceAll('_', ' ')}
+                        </MenuItem>
+                      );
+                    })}
+                    <ListSubheader>AFC West</ListSubheader>
+                    {teamNames.afc.west.map((teamName) => {
+                      return (
+                        <MenuItem key={teamName} value={{ ...league.afc.west[teamName] }}>
+                          {teamName.replaceAll('_', ' ')}
+                        </MenuItem>
+                      );
+                    })}
+                    <ListSubheader>AFC South</ListSubheader>
+                    {teamNames.afc.south.map((teamName) => {
+                      return (
+                        <MenuItem key={teamName} value={{ ...league.afc.south[teamName] }}>
+                          {teamName.replaceAll('_', ' ')}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
             </Grid>
           </Grid>
+          <Grid
+            item
+            justifyContent="center"
+            xs={6}
+            className="teamContainer"
+            style={{
+              backgroundColor: `#${selectedTeamOne?.colors?.secondary || 'ffffff'}`,
+              color: `#${selectedTeamOne?.colors?.primary || 'ffffff'}`,
+              // WebkitBoxShadow: `0px 0px 37px 50px #${selectedTeamOne?.colors?.secondary || 'ffffff'}`,
+              // boxShadow: `0px 0px 37px 50px #${selectedTeamOne?.colors?.secondary || 'ffffff'}`,
+            }}
+          >
+            {selectedTeamOne && <FormattedTeam {...selectedTeamOne} />}
+          </Grid>
+          <Grid
+            item
+            justifyContent="center"
+            xs={6}
+            className="teamContainer"
+            style={{
+              backgroundColor: `#${selectedTeamTwo?.colors?.secondary || 'ffffff'}`,
+              color: `#${selectedTeamTwo?.colors?.primary || 'ffffff'}`,
+              // WebkitBoxShadow: `0px 0px 37px 50px #${selectedTeamTwo?.colors?.secondary || 'ffffff'}`,
+              // boxShadow: `0px 0px 37px 50px #${selectedTeamTwo?.colors?.secondary || 'ffffff'}`,
+            }}
+          >
+            {selectedTeamTwo && <FormattedTeam {...selectedTeamTwo} />}
+          </Grid>
         </Grid>
-        <Grid
-          item
-          justifyContent="center"
-          xs={6}
-          className="teamContainer"
-          style={{
-            backgroundColor: `#${selectedTeamOne?.colors?.secondary || 'ffffff'}`,
-            color: `#${selectedTeamOne?.colors?.primary || 'ffffff'}`,
-            // WebkitBoxShadow: `0px 0px 37px 50px #${selectedTeamOne?.colors?.secondary || 'ffffff'}`,
-            // boxShadow: `0px 0px 37px 50px #${selectedTeamOne?.colors?.secondary || 'ffffff'}`,
-          }}
-        >
-          {selectedTeamOne && <FormattedTeam {...selectedTeamOne} />}
-        </Grid>
-        <Grid
-          item
-          justifyContent="center"
-          xs={6}
-          className="teamContainer"
-          style={{
-            backgroundColor: `#${selectedTeamTwo?.colors?.secondary || 'ffffff'}`,
-            color: `#${selectedTeamTwo?.colors?.primary || 'ffffff'}`,
-            // WebkitBoxShadow: `0px 0px 37px 50px #${selectedTeamTwo?.colors?.secondary || 'ffffff'}`,
-            // boxShadow: `0px 0px 37px 50px #${selectedTeamTwo?.colors?.secondary || 'ffffff'}`,
-          }}
-        >
-          {selectedTeamTwo && <FormattedTeam {...selectedTeamTwo} />}
-        </Grid>
-      </Grid>
+      ) : (
+        <h5>be patient, okay?</h5>
+      )}
     </div>
   );
 }
