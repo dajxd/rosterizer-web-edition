@@ -130,6 +130,20 @@ function App() {
     return team;
   };
 
+  const blendColors = (colorA, colorB, amount) => {
+    const [rA, gA, bA] = colorA.match(/\w\w/g).map((c) => parseInt(c, 16));
+    const [rB, gB, bB] = colorB.match(/\w\w/g).map((c) => parseInt(c, 16));
+    const r = Math.round(rA + (rB - rA) * amount)
+      .toString(16)
+      .padStart(2, '0');
+    const g = Math.round(gA + (gB - gA) * amount)
+      .toString(16)
+      .padStart(2, '0');
+    const b = Math.round(bA + (bB - bA) * amount)
+      .toString(16)
+      .padStart(2, '0');
+    return '#' + r + g + b;
+  };
   useEffect(() => {
     Object.entries(teamNames).forEach((conference) => {
       Object.entries(conference[1]).forEach((division) => {
@@ -252,8 +266,22 @@ function App() {
     <div className="App">
       {dataReady ? (
         <Grid container>
-          <Grid container item className="allTop">
-            <Grid container item xs={12} className="title">
+          <Grid
+            container
+            item
+            className="allTop"
+            style={{
+              backgroundColor: blendColors(`#${selectedTeamOne?.colors?.primary || 'ffffff'}`, `#${selectedTeamTwo?.colors?.primary || 'ffffff'}`, 0.5),
+            }}
+          >
+            <Grid
+              container
+              item
+              xs={12}
+              margin={1}
+              className="title"
+              color={blendColors(`#${selectedTeamOne?.colors?.secondary || 'cccccc'}`, `#${selectedTeamTwo?.colors?.secondary || 'cccccc'}`, 0.5)}
+            >
               <p />
               <p>r</p>
               <p>o</p>
@@ -267,9 +295,15 @@ function App() {
               <p>r</p>
               <p />
             </Grid>
-            <Grid container item m={4} justifyContent="space-between">
+            <Grid container item m={2} justifyContent="space-between">
               <Grid item textAlign="center">
-                <InputLabel>Team One</InputLabel>
+                <InputLabel
+                  style={{
+                    color: blendColors(`#${selectedTeamOne?.colors?.secondary || 'cccccc'}`, `#${selectedTeamTwo?.colors?.secondary || 'cccccc'}`, 0.5),
+                  }}
+                >
+                  Team One
+                </InputLabel>
                 <FormControl style={{ width: '200px' }}>
                   <Select
                     id="teamSelectOne"
@@ -349,7 +383,13 @@ function App() {
                 </FormControl>
               </Grid>
               <Grid item textAlign="center">
-                <InputLabel>Filter By Number</InputLabel>
+                <InputLabel
+                  style={{
+                    color: blendColors(`#${selectedTeamOne?.colors?.secondary || 'cccccc'}`, `#${selectedTeamTwo?.colors?.secondary || 'cccccc'}`, 0.5),
+                  }}
+                >
+                  Filter By Number
+                </InputLabel>
                 <TextField
                   value={filterNumber}
                   onChange={(e) => {
@@ -358,7 +398,13 @@ function App() {
                 ></TextField>
               </Grid>
               <Grid item textAlign="center">
-                <InputLabel>Today's Games</InputLabel>
+                <InputLabel
+                  style={{
+                    color: blendColors(`#${selectedTeamOne?.colors?.secondary || 'cccccc'}`, `#${selectedTeamTwo?.colors?.secondary || 'cccccc'}`, 0.5),
+                  }}
+                >
+                  Today's Games
+                </InputLabel>
                 <FormControl style={{ width: '200px' }}>
                   <Select
                     id="gameSelect"
@@ -385,7 +431,13 @@ function App() {
                 </FormControl>
               </Grid>
               <Grid item textAlign="center">
-                <InputLabel>Filter By Name</InputLabel>
+                <InputLabel
+                  style={{
+                    color: blendColors(`#${selectedTeamOne?.colors?.secondary || 'cccccc'}`, `#${selectedTeamTwo?.colors?.secondary || 'cccccc'}`, 0.5),
+                  }}
+                >
+                  Filter By Name
+                </InputLabel>
 
                 <TextField
                   value={filterName}
@@ -396,7 +448,13 @@ function App() {
               </Grid>
 
               <Grid item textAlign="center">
-                <InputLabel>Team Two</InputLabel>
+                <InputLabel
+                  style={{
+                    color: blendColors(`#${selectedTeamOne?.colors?.secondary || 'cccccc'}`, `#${selectedTeamTwo?.colors?.secondary || 'cccccc'}`, 0.5),
+                  }}
+                >
+                  Team Two
+                </InputLabel>
                 <FormControl style={{ width: '200px' }}>
                   <Select
                     id="teamSelectTwo"
